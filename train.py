@@ -85,6 +85,9 @@ if __name__ == "__main__":
     # Evaluation split
     parser.add_argument('--eval', type=str2bool, default=True, help='Use eval split.')
 
+    # Headless rendering
+    parser.add_argument('--headless', type=str2bool, default=False, help='Headless rendering.')
+
     # GPU
     parser.add_argument('--gpu', type=int, default=0, help='Index of GPU device to use.')
     parser.add_argument('--white_background', type=str2bool, default=False, help='Use a white background instead of black.')
@@ -193,6 +196,7 @@ if __name__ == "__main__":
             'postprocess_mesh': args.postprocess_mesh,
             'postprocess_density_threshold': args.postprocess_density_threshold,
             'postprocess_iterations': args.postprocess_iterations,
+            'headless': args.headless,
         })
         refined_mesh_path = extract_mesh_and_texture_from_refined_sugar(refined_mesh_args)
         

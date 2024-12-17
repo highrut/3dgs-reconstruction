@@ -120,6 +120,7 @@ def extract_mesh_and_texture_from_refined_sugar(args):
         beta_mode='average',
         surface_mesh_to_bind=o3d_mesh,
         n_gaussians_per_surface_triangle=n_gaussians_per_surface_triangle,
+        headless=args.headless
         )
     refined_sugar.load_state_dict(checkpoint['state_dict'])
     refined_sugar.eval()
@@ -180,6 +181,7 @@ def extract_mesh_and_texture_from_refined_sugar(args):
                 beta_mode='average',
                 surface_mesh_to_bind=new_o3d_mesh,
                 n_gaussians_per_surface_triangle=refined_sugar.n_gaussians_per_surface_triangle,
+                headless=args.headless
                 )
             refined_sugar._scales[...] = new_scales
             refined_sugar._quaternions[...] = new_quaternions

@@ -112,6 +112,7 @@ class SuGaR(nn.Module):
         # We wrote about this functionality in the paper, and it was previously part of sugar_compositor.py, which we haven't finished cleaning yet for this repo.
         # We now moved it to this script as it is more related to the SuGaR model than to the compositor.
         device=None,
+        headless=False,
         *args, **kwargs) -> None:
         """
         Args:
@@ -137,7 +138,10 @@ class SuGaR(nn.Module):
         """
         
         super(SuGaR, self).__init__()
-        
+
+        self.headless = headless
+        print("SuGaR headless:", self.headless)
+
         self.nerfmodel = nerfmodel
         self.freeze_gaussians = freeze_gaussians
         
@@ -389,7 +393,7 @@ class SuGaR(nn.Module):
             self._log_beta = torch.nn.Parameter(
                 log_beta.to(self.device),
                 ).to(self.device)
-    
+
     @property
     def device(self):
         if self.nerfmodel:
@@ -1468,6 +1472,7 @@ class SuGaR(nn.Module):
             rasterizer = MeshRasterizer(
                     cameras=nerf_cameras.p3d_cameras[cam_idx], 
                     raster_settings=mesh_raster_settings,
+                    headless=self.headless
                 )
             
         p3d_cameras = nerf_cameras.p3d_cameras[cam_idx]
@@ -1698,6 +1703,7 @@ class SuGaR(nn.Module):
             rasterizer = MeshRasterizer(
                     cameras=nerf_cameras.p3d_cameras[cam_idx], 
                     raster_settings=mesh_raster_settings,
+                    headless=self.headless
                 )
             
         p3d_cameras = nerf_cameras.p3d_cameras[cam_idx]
@@ -1930,6 +1936,7 @@ class SuGaR(nn.Module):
             rasterizer = MeshRasterizer(
                     cameras=nerf_cameras.p3d_cameras[cam_idx], 
                     raster_settings=mesh_raster_settings,
+                    headless=self.headless
                 )
             
         p3d_cameras = nerf_cameras.p3d_cameras[cam_idx]
@@ -2394,7 +2401,7 @@ class SuGaR(nn.Module):
         torch.save(checkpoint, path)        
 
 
-def load_refined_model(refined_sugar_path, nerfmodel:GaussianSplattingWrapper, device=None):
+def load_refined_model(refined_sugar_path, nerfmodel:GaussianSplattingWrapper, headless=False, device=None):
     if device is None:
         if nerfmodel is None:
             raise ValueError("You must provide a device if nerfmodel is None.")
@@ -2430,6 +2437,7 @@ def load_refined_model(refined_sugar_path, nerfmodel:GaussianSplattingWrapper, d
         surface_mesh_to_bind=o3d_mesh,
         n_gaussians_per_surface_triangle=n_gaussians_per_surface_triangle,
         device=device,
+        headless=headless,
         )
     refined_sugar.load_state_dict(checkpoint['state_dict'])
     
@@ -2719,6 +2727,7 @@ def extract_texture_image_and_uv_from_gaussians(
     rasterizer = MeshRasterizer(
             cameras=rc.nerfmodel.training_cameras.p3d_cameras[0], 
             raster_settings=mesh_raster_settings,
+            headless=self.headless
     )
     renderer = MeshRenderer(
         rasterizer=rasterizer,

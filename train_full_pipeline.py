@@ -79,6 +79,9 @@ if __name__ == "__main__":
     # Evaluation split
     parser.add_argument('--eval', type=str2bool, default=True, help='Use eval split.')
 
+    # Headless rendering
+    parser.add_argument('--headless', type=str2bool, default=False, help='Headless rendering.')
+
     # GPU
     parser.add_argument('--gpu', type=int, default=0, help='Index of GPU device to use.')
     parser.add_argument('--white_background', type=str2bool, default=False, help='Use a white background instead of black.')
@@ -157,5 +160,6 @@ if __name__ == "__main__":
             --refinement_time {args.refinement_time} \
             --eval {args.eval} \
             --gpu {args.gpu} \
-            --white_background {args.white_background}"
+            --white_background {args.white_background} \
+            --headless {args.headless}"
     )

@@ -28,6 +28,8 @@ if __name__ == "__main__":
     
     parser.add_argument('--eval', type=str2bool, default=True, help='Use eval split.')
     parser.add_argument('-g', '--gpu', type=int, default=0, help='Index of GPU to use.')
+
+    parser.add_argument('--headless', type=str2bool, default=False, help='Headless rendering.')
     
     # Optional postprocessing
     parser.add_argument('--postprocess_mesh', type=str2bool, default=False, 

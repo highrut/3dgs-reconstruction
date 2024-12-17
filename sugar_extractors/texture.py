@@ -105,6 +105,7 @@ def compute_textured_mesh_for_sugar_mesh(
         cameras=sugar.nerfmodel.training_cameras,
         raster_settings=raster_settings,
         use_nvdiffrast=True,
+        headless=sugar.headless,
     )
     
     print(f"Processing images...")

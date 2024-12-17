@@ -45,13 +45,17 @@ class MeshRasterizer(torch.nn.Module):
         cameras:Union[P3DCameras, GSCamera, CamerasWrapper]=None,
         raster_settings:RasterizationSettings=None,
         use_nvdiffrast:bool=True,
+        headless:bool=False,
     ):
         super().__init__()
         
         if not nvdiffrast_available:
             use_nvdiffrast = False
         self.use_nvdiffrast = use_nvdiffrast
-        
+        self.headless = headless
+
+        print("MeshRasterizer headless", self.headless)
+
         # Get height and width if provided in cameras
         if isinstance(cameras, CamerasWrapper):
             self.height = cameras.gs_cameras[0].image_height
@@ -97,8 +101,10 @@ class MeshRasterizer(torch.nn.Module):
         
         else:
             raise ValueError("cameras must be either CamerasWrapper, P3DCameras, GSCamera or list of GSCamera")
-        
-        if self.use_nvdiffrast:
+
+        if self.headless:
+            self.gl_context = dr.RasterizeCudaContext()
+        elif self.use_nvdiffrast:
             self.gl_context = dr.RasterizeGLContext()
         else:
             self._p3d_mesh_rasterizer = P3DMeshRasterizer(
