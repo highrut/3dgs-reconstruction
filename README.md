@@ -129,7 +129,7 @@ cd ../
 
 ## Quick Start
 
-Create data folder in the root folder of this repository and move your images to data/SCENE_NAME/input.
+Create `data` folder in the root folder of this repository and move your images to `data/SCENE_NAME/input`.
 
 Then, run
 ```shell
