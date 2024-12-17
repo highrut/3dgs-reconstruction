@@ -2,8 +2,8 @@
 
 name=$1
 
-data_dir=../data/$name/
-model_path=output/vanilla/$name/
+data_dir=./data/$name/
+model_path=./output/vanilla/$name/
 
 python gaussian_splatting/convert.py \
     --source_path $data_dir \
