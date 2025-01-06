@@ -19,7 +19,7 @@ Under [notebooks](https://github.com/highrut/3dgs-reconstruction/blob/main/noteb
 
 ### dn-splatter
 
-For [dn-splatter](https://github.com/maturk/dn-splatter/), there are bash scripts for [training a Gaussian splatting model](https://github.com/highrut/3dgs-reconstruction/blob/main/dn_splatter/train.sh) and [mesh extraction & evaluation](https://github.com/highrut/3dgs-reconstruction/blob/main/dn_splatter/extract_mesh.sh).
+For [dn-splatter](https://github.com/maturk/dn-splatter/), there are bash scripts for [training a Gaussian splatting model](https://github.com/highrut/3dgs-reconstruction/blob/main/dn-splatter/train.sh) and [mesh extraction & evaluation](https://github.com/highrut/3dgs-reconstruction/blob/main/dn-splatter/extract_mesh.sh).
 
 Please clone the repository of dn-splatter, and follow the installation instructions. 
 The scripts should be placed under the root directory of dn-splatter.
