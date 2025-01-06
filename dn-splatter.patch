@@ -1,0 +1,55 @@
+diff --git a/dn_splatter/data/coolermap_dataparser.py b/dn_splatter/data/coolermap_dataparser.py
+index 753dc4c..9f20cbb 100644
+--- a/dn_splatter/data/coolermap_dataparser.py
++++ b/dn_splatter/data/coolermap_dataparser.py
+@@ -71,6 +71,8 @@ class CoolerMapDataParserConfig(ColmapDataParserConfig):
+     """Path to images directory relative to the data path."""
+     depths_path: Optional[Path] = None
+     """Path to depth maps directory. If not set, depths are not loaded."""
++    masks_path: Optional[Path] = None
++    """Path to masks directory. If not set, masks are not loaded."""
+     orientation_method: Literal["pca", "up", "vertical", "none"] = "none"
+     """The method to use for orientation."""
+     center_method: Literal["poses", "focus", "none"] = "none"
+diff --git a/dn_splatter/dn_model.py b/dn_splatter/dn_model.py
+index bcc3739..79aea69 100644
+--- a/dn_splatter/dn_model.py
++++ b/dn_splatter/dn_model.py
+@@ -1433,14 +1433,15 @@ class DNSplatterModel(SplatfactoModel):
+                 ),
+             )
+             samples_mask = torch.tensor(indices, device=points.device)
+-            intersection_points = intersection_points[samples_mask]
+-            intersection_normals = intersection_normals[samples_mask]
+-            intersection_colors = intersection_colors[samples_mask]
+-
+-            outputs["points"] = intersection_points
+-            outputs["normals"] = intersection_normals
+-            outputs["colors"] = intersection_colors
+-            all_outputs[surface_level] = outputs
++            if len(samples_mask) > 0:
++                intersection_points = intersection_points[samples_mask]
++                intersection_normals = intersection_normals[samples_mask]
++                intersection_colors = intersection_colors[samples_mask]
++
++                outputs["points"] = intersection_points
++                outputs["normals"] = intersection_normals
++                outputs["colors"] = intersection_colors
++                all_outputs[surface_level] = outputs
+ 
+         return all_outputs
+ 
+diff --git a/dn_splatter/export_mesh.py b/dn_splatter/export_mesh.py
+index 8461076..7e6141a 100644
+--- a/dn_splatter/export_mesh.py
++++ b/dn_splatter/export_mesh.py
+@@ -532,6 +532,9 @@ class LevelSetExtractor(GSMeshExporter):
+                 )  # type: ignore
+ 
+                 for surface_level in self.surface_levels:
++                    if not surface_level in frame_outputs:
++                        continue
++
+                     img_surface_points = frame_outputs[surface_level]["points"]
+                     img_surface_colors = frame_outputs[surface_level]["colors"]
+                     img_surface_normals = frame_outputs[surface_level]["normals"]
