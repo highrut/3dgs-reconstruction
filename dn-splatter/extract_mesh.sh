@@ -46,7 +46,7 @@ for method in "${!mesh_names[@]}"; do
             --poisson_depth $poisson_depth --use_masks $use_masks
     fi
 
-    python ./evaluate.py \
+    python ../evaluate.py \
         --gt-file $data_dir/gt_mesh.ply \
         --reconstructed-file $meshes_dir/$output_name/$mesh_name.ply \
         --output-dir $results_dir/$output_name \
